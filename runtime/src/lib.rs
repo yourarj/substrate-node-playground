@@ -40,8 +40,8 @@ use pallet_transaction_payment::CurrencyAdapter;
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
-/// Import the template pallet.
-pub use pallet_template;
+/// Import the kittens pallet.
+pub use pallet_kittens;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -301,7 +301,7 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
-impl pallet_template::Config for Runtime {
+impl pallet_kittens::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type KittyRandomness = RandomnessCollectiveFlip;
@@ -324,8 +324,8 @@ construct_runtime!(
 		Nicks: pallet_nicks,
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
-		// Include the custom logic from the pallet-template in the runtime.
-		SubstrateKitties: pallet_template,
+		// Include the custom logic from the pallet-kittens in the runtime.
+		SubstrateKitties: pallet_kittens,
 	}
 );
 
@@ -368,7 +368,7 @@ mod benches {
 		[frame_system, SystemBench::<Runtime>]
 		[pallet_balances, Balances]
 		[pallet_timestamp, Timestamp]
-		[pallet_template, TemplateModule]
+		[pallet_kittens, SubstrateKitties]
 	);
 }
 
