@@ -301,9 +301,11 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
-/// Configure the pallet-template in pallets/template.
 impl pallet_template::Config for Runtime {
 	type Event = Event;
+	type Currency = Balances;
+	type KittyRandomness = RandomnessCollectiveFlip;
+	type MaxKittiesOwned = frame_support::pallet_prelude::ConstU32<100>;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -323,7 +325,7 @@ construct_runtime!(
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-template in the runtime.
-		TemplateModule: pallet_template,
+		SubstrateKitties: pallet_template,
 	}
 );
 
