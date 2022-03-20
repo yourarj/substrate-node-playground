@@ -68,6 +68,8 @@ pub mod pallet {
 	pub enum Event<T: Config> {
 		// Whenever user greets
 		Greeted { user: T::AccountId },
+		// when account is initialized for the first time
+		AccountInitialized { user: T::AccountId },
 		// Whenever greeting count is beyond allowed one
 		QuotaExceeded { user: T::AccountId, membership: Membership },
 		// when member upgrades the membership
@@ -85,5 +87,49 @@ pub mod pallet {
 
 	// Greeter Pallet's callables.
 	#[pallet::call]
-	impl<T: Config> Pallet<T> {}
+	impl<T: Config> Pallet<T> {
+		/// Greet Operation
+		///
+		/// let signed origins greet
+		#[pallet::weight(0)]
+		pub fn greet(origin: OriginFor<T>) -> DispatchResult {
+			// Make sure the caller is from a signed origin
+			let user = ensure_signed(origin)?;
+
+			// Generate unique DNA and Gender using a helper function
+			Self::do_greet(user)?;
+			Ok(())
+		}
+	}
+
+	// methods internal to pallet
+	impl<T: Config> Pallet<T> {
+		// logic of storing and updating the greet info
+		fn do_greet(user: T::AccountId) -> Result<(), DispatchError> {
+			let opt_member = Members::<T>::get(&user);
+
+			if let Some(mut member) = opt_member {
+				match member.member_type {
+					Membership::Standard => Err(Error::<T>::QuotaExceeded.into()),
+
+					Membership::Platinum | Membership::Gold => {
+						if member.greet_count > member.member_type.get_quota() {
+							Err(Error::<T>::QuotaExceeded.into())
+						} else {
+							member.greet_count += 1;
+							Ok(())
+						}
+					},
+				}
+			} else {
+				Members::<T>::insert(
+					&user,
+					Member { greet_count: 1, member_type: Membership::Standard, id: user.clone() },
+				);
+
+				log::info!("account initialize successfully!!");
+				Ok(())
+			}
+		}
+	}
 }
