@@ -62,14 +62,22 @@ pub mod pallet {
 	#[pallet::storage]
 	pub(super) type Members<T: Config> = StorageMap<_, Twox64Concat, T::AccountId, Member<T>>;
 
+	// events this pallet will generate
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
-	pub enum Event<T: Config> {}
+	pub enum Event<T: Config> {
+		// Whenever user greets
+		Greeted { user: T::AccountId },
+		// Whenever greeting count is beyond allowed one
+		QuotaExceeded { user: T::AccountId, membership: Membership },
+		// when member upgrades the membership
+		MembershipUpgraded { user: T::AccountId, old_membership: Membership },
+	}
 
 	// error to report if case of undesired situation
 	#[pallet::error]
 	pub enum Error<T> {}
-
+git s
 	// Greeter Pallet's callables.
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {}
