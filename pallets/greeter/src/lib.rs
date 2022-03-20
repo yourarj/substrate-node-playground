@@ -5,8 +5,28 @@ pub use pallet::*;
 /// ## Greeter Pallet
 /// this pallet lets user greet the
 /// blockchain
+/// 
+/// Goal:
+/// 	✔ Implmement custom types
+/// 	✔ Implement custom storage
+/// 	✔ Implement custom Events
+/// 	✔ Implement custom errors
+/// 	✔ Implement extrinsics without input
+/// 	✔ Implement extrinsics with input
+/// 	✔ Implement types without `std` lib
+/// 
+/// Scenarios testest:
+/// 	✔ should_succeed - greet when no account
+/// 	✔ should_fail - greet twice with STANDARD
+/// 	✔ should_succeed - upgrade membership with no account
+/// 	✔ should_succeed - upgrade membership with account
+/// 	✔ should_succeed - upgrade from smaller to larger type and greet
+/// 	✔ should_fail - upgrade from larger to smaller and tweet
+/// 	✔ should_fail - invalid input (both content and length) when upgrading 
+/// 	
 #[frame_support::pallet]
 pub mod pallet {
+	use core::str::FromStr;
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
@@ -42,6 +62,20 @@ pub mod pallet {
 		}
 	}
 
+	// implement FromStr for enum
+	impl FromStr for Membership {
+		type Err = scale_info::prelude::string::String;
+
+		fn from_str(s: &str) -> Result<Self, Self::Err> {
+			match &s.to_uppercase()[..] {
+				"PLATINUM" => Ok(Membership::Platinum),
+				"GOLD" => Ok(Membership::Gold),
+				"STANDARD" => Ok(Membership::Standard),
+				_ => Err(scale_info::prelude::string::String::from("Invalid membership specified")),
+			}
+		}
+	}
+
 	/// ### A Member
 	/// Member of the Greeter community\
 	/// stores info\
@@ -73,7 +107,7 @@ pub mod pallet {
 		// Whenever greeting count is beyond allowed one
 		QuotaExceeded { user: T::AccountId, membership: Membership },
 		// when member upgrades the membership
-		MembershipUpgraded { user: T::AccountId, old_membership: Membership },
+		MembershipUpgraded { user: T::AccountId, new_membership: Membership },
 	}
 
 	// error to report if case of undesired situation
@@ -98,6 +132,32 @@ pub mod pallet {
 
 			// Generate unique DNA and Gender using a helper function
 			Self::do_greet(user)?;
+			Ok(())
+		}
+
+		/// Alter membership Operation
+		///
+		/// let alter membership
+		#[pallet::weight(0)]
+		pub fn alter_membership(
+			origin: OriginFor<T>,
+			membership: scale_info::prelude::vec::Vec<u8>,
+		) -> DispatchResult {
+			// Make sure the caller is from a signed origin
+			let user = ensure_signed(origin)?;
+
+			// throw error if string lenght is unreasonably long
+			log::info!("vec length: {}", membership.len());
+			if membership.len() > 50 {
+				return Err(Error::<T>::InvalidUpgrade.into());
+			}
+
+			let res_encode = scale_info::prelude::string::String::from_utf8(membership)
+				.map(|str_membership| str_membership)
+				.map_err(|_| Error::<T>::InvalidUpgrade)?;
+
+			// Generate unique DNA and Gender using a helper function
+			Self::do_alter_membership(user, &res_encode)?;
 			Ok(())
 		}
 	}
@@ -129,6 +189,8 @@ pub mod pallet {
 							Err(Error::<T>::QuotaExceeded.into())
 						} else {
 							member.greet_count += 1;
+							Members::<T>::insert(&user, member);
+							Self::deposit_event(Event::Greeted { user: user.clone() });
 							Ok(())
 						}
 					},
@@ -141,10 +203,42 @@ pub mod pallet {
 
 				// emit account initialized event
 				Self::deposit_event(Event::AccountInitialized { user: user.clone() });
+				Self::deposit_event(Event::Greeted { user: user.clone() });
 
 				log::info!("account initialize successfully!!");
 				Ok(())
 			}
+		}
+
+		// logic for upgrading membership
+		fn do_alter_membership(user: T::AccountId, membership: &str) -> Result<(), DispatchError> {
+			let mem_enum = Membership::from_str(membership)
+				.map(|mem| mem)
+				.map_err(|_| Error::<T>::InvalidUpgrade)?;
+
+			let opt_member = Members::<T>::get(&user);
+
+			if let Some(mut member) = opt_member {
+				member.member_type = mem_enum;
+				Members::<T>::insert(&user, member);
+				// emit account initialized event
+				Self::deposit_event(Event::MembershipUpgraded {
+					user: user.clone(),
+					new_membership: mem_enum,
+				});
+			} else {
+				Members::<T>::insert(
+					&user,
+					Member { greet_count: 0, member_type: mem_enum, id: user.clone() },
+				);
+
+				// emit account initialized event
+				Self::deposit_event(Event::MembershipUpgraded {
+					user: user.clone(),
+					new_membership: mem_enum,
+				});
+			}
+			Ok(())
 		}
 	}
 }
