@@ -110,10 +110,22 @@ pub mod pallet {
 
 			if let Some(mut member) = opt_member {
 				match member.member_type {
-					Membership::Standard => Err(Error::<T>::QuotaExceeded.into()),
+					Membership::Standard => {
+						// emit quota exceeded event
+						Self::deposit_event(Event::QuotaExceeded {
+							user: user.clone(),
+							membership: Membership::Standard,
+						});
+						Err(Error::<T>::QuotaExceeded.into())
+					},
 
 					Membership::Platinum | Membership::Gold => {
 						if member.greet_count > member.member_type.get_quota() {
+							// emit quota exceeded event
+							Self::deposit_event(Event::QuotaExceeded {
+								user: user.clone(),
+								membership: member.member_type,
+							});
 							Err(Error::<T>::QuotaExceeded.into())
 						} else {
 							member.greet_count += 1;
@@ -126,6 +138,9 @@ pub mod pallet {
 					&user,
 					Member { greet_count: 1, member_type: Membership::Standard, id: user.clone() },
 				);
+
+				// emit account initialized event
+				Self::deposit_event(Event::AccountInitialized { user: user.clone() });
 
 				log::info!("account initialize successfully!!");
 				Ok(())
