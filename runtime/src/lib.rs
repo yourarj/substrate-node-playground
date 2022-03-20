@@ -43,6 +43,9 @@ pub use sp_runtime::{Perbill, Permill};
 /// Import the kittens pallet.
 pub use pallet_kittens;
 
+/// Import the greeter pallet.
+pub use pallet_greeter;
+
 /// An index to a block.
 pub type BlockNumber = u32;
 
@@ -301,11 +304,17 @@ impl pallet_sudo::Config for Runtime {
 	type Call = Call;
 }
 
+// implement kittens config trait for runtime
 impl pallet_kittens::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type KittyRandomness = RandomnessCollectiveFlip;
 	type MaxKittiesOwned = frame_support::pallet_prelude::ConstU32<100>;
+}
+
+// TODO implement greeter config trait for runtime
+impl pallet_greeter::Config for Runtime {
+	type Event = Event;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -326,6 +335,9 @@ construct_runtime!(
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-kittens in the runtime.
 		SubstrateKitties: pallet_kittens,
+		// Include the custom logic from the pallet-greeter in the runtime.
+		SubsGreeter: pallet_greeter,
+
 	}
 );
 
@@ -369,6 +381,7 @@ mod benches {
 		[pallet_balances, Balances]
 		[pallet_timestamp, Timestamp]
 		[pallet_kittens, SubstrateKitties]
+		[pallet_greeter, SubGreeter]
 	);
 }
 
