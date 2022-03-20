@@ -57,6 +57,11 @@ pub mod pallet {
 		pub id: T::AccountId,
 	}
 
+	// StorageMap containing entries of AccountId and Member
+	// object defined above
+	#[pallet::storage]
+	pub(super) type Members<T: Config> = StorageMap<_, Twox64Concat, T::AccountId, Member<T>>;
+
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {}
