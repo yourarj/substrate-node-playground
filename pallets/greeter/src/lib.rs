@@ -5,8 +5,11 @@ pub use pallet::*;
 /// ## Greeter Pallet
 /// this pallet lets user greet the
 /// blockchain
-/// 
-/// Goal:
+///
+/// ### membership values supported are
+/// 	[standard | gold | platinum]
+///
+/// ### Goals ACHIEVED:
 /// 	✔ Implmement custom types
 /// 	✔ Implement custom storage
 /// 	✔ Implement custom Events
@@ -14,16 +17,16 @@ pub use pallet::*;
 /// 	✔ Implement extrinsics without input
 /// 	✔ Implement extrinsics with input
 /// 	✔ Implement types without `std` lib
-/// 
-/// Scenarios testest:
+///
+/// ### Scenarios TESTED:
 /// 	✔ should_succeed - greet when no account
 /// 	✔ should_fail - greet twice with STANDARD
 /// 	✔ should_succeed - upgrade membership with no account
 /// 	✔ should_succeed - upgrade membership with account
 /// 	✔ should_succeed - upgrade from smaller to larger type and greet
 /// 	✔ should_fail - upgrade from larger to smaller and tweet
-/// 	✔ should_fail - invalid input (both content and length) when upgrading 
-/// 	
+/// 	✔ should_fail - invalid input (both content and length) when upgrading
+///
 #[frame_support::pallet]
 pub mod pallet {
 	use core::str::FromStr;
