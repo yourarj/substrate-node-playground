@@ -165,6 +165,35 @@ pub mod pallet {
 		}
 	}
 
+	// Hooks
+	#[pallet::hooks]
+	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
+		fn on_finalize(block_number: T::BlockNumber) {
+			log::info!("GREETER_HOOK[on_finalize]: bock {:?} has been finalized", block_number);
+		}
+
+		fn on_idle(block_number: T::BlockNumber, remaining_weight: Weight) -> Weight {
+			log::info!(
+				"GREETER_HOOK[on_idle]: bock {:?} is being finalized remaining weight is {}",
+				block_number,
+				remaining_weight
+			);
+			// assuming a millis weight is spent
+			frame_support::weights::constants::WEIGHT_PER_MILLIS
+		}
+
+		fn on_initialize(block_number: T::BlockNumber) -> Weight {
+			log::info!("GREETER_HOOK[on_finalize]: block {:?} is being initialized", block_number);
+			// assuming a millis weight is spent
+			frame_support::weights::constants::WEIGHT_PER_MILLIS
+		}
+		fn on_runtime_upgrade() -> Weight {
+			log::info!("GREETER_HOOK[on_runtime_upgrade]: runtime has been upgraded");
+			// assuming a millis weight is spent
+			frame_support::weights::constants::WEIGHT_PER_MILLIS
+		}
+	}
+
 	// methods internal to pallet
 	impl<T: Config> Pallet<T> {
 		// logic of storing and updating the greet info
