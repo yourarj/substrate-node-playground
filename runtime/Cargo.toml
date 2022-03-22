@@ -57,6 +57,9 @@ pallet-kittens = { version = "4.0.0-dev", default-features = false, path = "../p
 # kittens
 pallet-greeter = { version = "4.0.0-dev", default-features = false, path = "../pallets/greeter" }
 
+# kittens
+pallet-playground = { version = "4.0.0-dev", default-features = false, path = "../pallets/playground" }
+
 # pallet nicks
 pallet-nicks = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.17" }
 

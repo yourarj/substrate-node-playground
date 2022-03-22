@@ -46,6 +46,9 @@ pub use pallet_kittens;
 /// Import the greeter pallet.
 pub use pallet_greeter;
 
+/// Import the playground Pallet
+pub use pallet_playground;
+
 /// An index to a block.
 pub type BlockNumber = u32;
 
@@ -317,6 +320,11 @@ impl pallet_greeter::Config for Runtime {
 	type Event = Event;
 }
 
+// TODO implement greeter config trait for runtime
+impl pallet_playground::Config for Runtime {
+	type Event = Event;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -337,7 +345,8 @@ construct_runtime!(
 		SubstrateKitties: pallet_kittens,
 		// Include the custom logic from the pallet-greeter in the runtime.
 		SubsGreeter: pallet_greeter,
-
+		// Include custom logic from the pallet-playground
+		SubsPlayGround: pallet_playground
 	}
 );
 

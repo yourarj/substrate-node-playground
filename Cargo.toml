@@ -1,4 +1,10 @@
 [workspace]
-members = ["node", "pallets/kittens", "pallets/greeter", "runtime"]
+members = [
+    "node",
+    "pallets/kittens",
+    "pallets/greeter",
+    "pallets/playground",
+    "runtime",
+]
 [profile.release]
 panic = "unwind"
