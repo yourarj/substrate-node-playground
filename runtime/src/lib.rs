@@ -315,12 +315,12 @@ impl pallet_kittens::Config for Runtime {
 	type MaxKittiesOwned = frame_support::pallet_prelude::ConstU32<100>;
 }
 
-// TODO implement greeter config trait for runtime
+// implement greeter config trait for runtime
 impl pallet_greeter::Config for Runtime {
 	type Event = Event;
 }
 
-// TODO implement greeter config trait for runtime
+// implement greeter config trait for runtime
 impl pallet_playground::Config for Runtime {
 	type Event = Event;
 }

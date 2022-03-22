@@ -10,13 +10,14 @@ pub use pallet::*;
 /// 	[standard | gold | platinum]
 ///
 /// ### Goals ACHIEVED:
-/// 	✔ Implmement custom types
-/// 	✔ Implement custom storage
-/// 	✔ Implement custom Events
-/// 	✔ Implement custom errors
-/// 	✔ Implement extrinsics without input
-/// 	✔ Implement extrinsics with input
-/// 	✔ Implement types without `std` lib
+/// 	✔ implmement custom TYPES
+/// 	✔ implement custom STORAGE
+/// 	✔ implement custom EVENTS
+/// 	✔ implement custom ERRORS
+/// 	✔ implement EXTRINSICS without input
+/// 	✔ implement EXTRINSICS with input
+/// 	✔ implement types without `std` LIB
+/// 	✔ implement custom HOOKS
 ///
 /// ### Scenarios TESTED:
 /// 	✔ should_succeed - greet when no account
@@ -26,6 +27,8 @@ pub use pallet::*;
 /// 	✔ should_succeed - upgrade from smaller to larger type and greet
 /// 	✔ should_fail - upgrade from larger to smaller and tweet
 /// 	✔ should_fail - invalid input (both content and length) when upgrading
+/// 	✔ should_succeed - hooks defined should get invoked
+///
 ///
 #[frame_support::pallet]
 pub mod pallet {
