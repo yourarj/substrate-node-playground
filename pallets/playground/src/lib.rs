@@ -32,7 +32,7 @@ pub mod pallet {
 	// 5. Runtime Events
 	// Can stringify event types to metadata.
 	#[pallet::event]
-	#[pallet::generate_deposit(pub(super) fn deposit_event)]
+	// #[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {}
 
 	// 6. Hooks

@@ -171,10 +171,14 @@ pub mod pallet {
 	// Hooks
 	#[pallet::hooks]
 	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
+		/// ### on_finalize
+		/// it will get invoked once the block is finalized
 		fn on_finalize(block_number: T::BlockNumber) {
 			log::info!("GREETER_HOOK[on_finalize]: bock {:?} has been finalized", block_number);
 		}
 
+		/// ### on_idle
+		/// it will get invoked when the block is in the process of being finalized
 		fn on_idle(block_number: T::BlockNumber, remaining_weight: Weight) -> Weight {
 			log::info!(
 				"GREETER_HOOK[on_idle]: bock {:?} is being finalized remaining weight is {}",
@@ -185,15 +189,29 @@ pub mod pallet {
 			frame_support::weights::constants::WEIGHT_PER_MILLIS
 		}
 
+		/// ### on_initialize
+		/// gets invoked when the blick is initialized
 		fn on_initialize(block_number: T::BlockNumber) -> Weight {
 			log::info!("GREETER_HOOK[on_finalize]: block {:?} is being initialized", block_number);
 			// assuming a millis weight is spent
 			frame_support::weights::constants::WEIGHT_PER_MILLIS
 		}
+
+		/// ### on_runtime_upgrade
+		/// gets invoked if the runtime (wasm) is upgraded
 		fn on_runtime_upgrade() -> Weight {
 			log::info!("GREETER_HOOK[on_runtime_upgrade]: runtime has been upgraded");
 			// assuming a millis weight is spent
 			frame_support::weights::constants::WEIGHT_PER_MILLIS
+		}
+
+		/// ### offchain_worker
+		/// get invoked after every block is imported (fully synced)
+		fn offchain_worker(block_number: T::BlockNumber) {
+			log::info!(
+				"GREETER_HOOK[offchain_worker]: I'm doing work off the chain on block: {:?}",
+				block_number
+			);
 		}
 	}
 
