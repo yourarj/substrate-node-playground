@@ -322,6 +322,9 @@ impl pallet_greeter::Config for Runtime {
 
 // implement greeter config trait for runtime
 impl pallet_playground::Config for Runtime {
+	//TODO check if we can use any alternatives for MyGetParam and Balance types
+	type MyGetParam = ();
+	type Balance = u64;
 	type Event = Event;
 }
 
