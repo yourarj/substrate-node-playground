@@ -40,7 +40,7 @@ pub mod pallet {
 	#[pallet::hooks]
 	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
 		fn on_initialize(_n: BlockNumberFor<T>) -> Weight {
-			unimplemented!();
+			frame_support::weights::constants::WEIGHT_PER_MICROS
 		}
 
 		// can implement also: on_finalize, on_runtime_upgrade, offchain_worker, ...
@@ -63,7 +63,7 @@ pub mod pallet {
 			#[pallet::compact] _foo: u32,
 		) -> DispatchResultWithPostInfo {
 			let _ = origin;
-			unimplemented!();
+			Ok(().into())
 		}
 	}
 
