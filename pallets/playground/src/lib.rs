@@ -1,3 +1,6 @@
+// as the runtime is compiled as bin and wasm module
+// by applying `no_std` attribute we make sure it works with
+// wasm too
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub use pallet::*; // reexport in crate namespace for `construct_runtime!`
@@ -9,6 +12,7 @@ pub mod pallet {
 	use frame_support::pallet_prelude::*; // Import various types used in the pallet definition
 	use frame_system::pallet_prelude::*; // Import some system helper types.
 
+	// type alias for easy access
 	type BalanceOf<T> = <T as Config>::Balance;
 
 	// Define the generic parameter of the pallet
@@ -16,8 +20,9 @@ pub mod pallet {
 	// for the pallet's constants.
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
-		#[pallet::constant] // put the constant in metadata
-		type MyGetParam: Get<u32>;
+		/// playground size
+		#[pallet::constant]
+		type MyPlayGroundSize: Get<u32>;
 		type Balance: Parameter + From<u8> + MaxEncodedLen;
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 	}
@@ -25,9 +30,9 @@ pub mod pallet {
 	// Define some additional constant to put into the constant metadata.
 	#[pallet::extra_constants]
 	impl<T: Config> Pallet<T> {
-		/// Some description
-		fn exra_constant_name() -> u128 {
-			4u128
+		/// maximum players allowed on ground
+		fn max_players_allowed() -> u128 {
+			13u128
 		}
 	}
 
@@ -98,6 +103,7 @@ pub mod pallet {
 		Something(u32),
 	}
 
+	// TODO: get hands dirty with this too type_value
 	// Define a struct which implements `frame_support::traits::Get<T::Balance>` (optional).
 	#[pallet::type_value]
 	pub(super) fn MyDefault<T: Config>() -> T::Balance {
@@ -124,9 +130,11 @@ pub mod pallet {
 
 	// Another storage declaration
 	#[pallet::storage]
+	// optional getter of MyStorage
 	#[pallet::getter(fn my_storage)]
 	pub(super) type MyStorage<T> = StorageMap<Hasher = Blake2_128Concat, Key = u32, Value = u32>;
 
+	// TODO: Get hands dirty with genesis config
 	// Declare the genesis config (optional).
 	//
 	// The macro accepts either a struct or an enum; it checks that generics are consistent.
@@ -138,6 +146,7 @@ pub mod pallet {
 		pub myfield: u32,
 	}
 
+	// TODO: Get hands dirty with genesis build and get idea on how it's different from genesis config
 	// Declare genesis builder. (This is need only if GenesisConfig is declared)
 	#[pallet::genesis_build]
 	impl<T: Config> GenesisBuild<T> for GenesisConfig {

@@ -323,13 +323,14 @@ impl pallet_greeter::Config for Runtime {
 // implement greeter config trait for runtime
 impl pallet_playground::Config for Runtime {
 	//TODO check if we can use any alternatives for MyGetParam and Balance types
-	type MyGetParam = ();
+	type MyPlayGroundSize = ();
 	type Balance = u64;
 	type Event = Event;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
+	// TODO Understand what's so special about the Runtime enum
 	pub enum Runtime where
 		Block = Block,
 		NodeBlock = opaque::Block,
