@@ -162,7 +162,7 @@ pub mod pallet {
 			if let Some(ind) = from_owned.iter().position(|&id| id == kitty_id) {
 				from_owned.swap_remove(ind);
 			} else {
-				return Err(Error::<T>::NoKitty.into());
+				return Err(Error::<T>::NoKitty.into())
 			}
 
 			// Add kitty to the list of owned kitties.

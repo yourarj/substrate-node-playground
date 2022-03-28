@@ -152,6 +152,6 @@ fn testnet_genesis(
 			key: Some(root_key),
 		},
 		transaction_payment: Default::default(),
-		subs_play_ground: SubsPlayGroundConfig {myfield: 0},
+		subs_play_ground: SubsPlayGroundConfig { myfield: 0 },
 	}
 }

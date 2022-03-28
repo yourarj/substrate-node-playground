@@ -28,8 +28,6 @@ pub use pallet::*;
 /// 	✔ should_fail - upgrade from larger to smaller and tweet
 /// 	✔ should_fail - invalid input (both content and length) when upgrading
 /// 	✔ should_succeed - hooks defined should get invoked
-///
-///
 #[frame_support::pallet]
 pub mod pallet {
 	use core::str::FromStr;
@@ -155,7 +153,7 @@ pub mod pallet {
 			// throw error if string lenght is unreasonably long
 			log::info!("vec length: {}", membership.len());
 			if membership.len() > 50 {
-				return Err(Error::<T>::InvalidUpgrade.into());
+				return Err(Error::<T>::InvalidUpgrade.into())
 			}
 
 			let res_encode = scale_info::prelude::string::String::from_utf8(membership)

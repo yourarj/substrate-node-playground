@@ -323,19 +323,27 @@ impl pallet_greeter::Config for Runtime {
 // implement greeter config trait for runtime
 impl pallet_playground::Config for Runtime {
 	//TODO check if we can use any alternatives for MyGetParam and Balance types
-	type MyPlayGroundSize = ();
+	type MyPlayGroundSize = frame_support::pallet_prelude::ConstU32<24_000_000>;
 	type Balance = u64;
 	type Event = Event;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
-	// TODO Understand what's so special about the Runtime enum
+	// following enum is not a rust enum construct
+	// it is substrate specific custom construct
 	pub enum Runtime where
-		Block = Block,
-		NodeBlock = opaque::Block,
-		UncheckedExtrinsic = UncheckedExtrinsic
+	// TODO what is significance of Block
+	Block = Block,
+	// TODO waht is significance of NodeBlock
+	NodeBlock = opaque::Block,
+	// TODO what is significance of UncheckedExtrinsic
+	UncheckedExtrinsic = UncheckedExtrinsic
 	{
+		// following is list of pallets of which the
+		// runtime will be comprised of.
+		// these contain both custom as well pallets by
+		// substrate itself
 		System: frame_system,
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip,
 		Timestamp: pallet_timestamp,

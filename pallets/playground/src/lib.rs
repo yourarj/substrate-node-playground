@@ -9,8 +9,10 @@ pub use pallet::*; // reexport in crate namespace for `construct_runtime!`
 // NOTE: The name of the pallet is provided by `construct_runtime` and is used as
 // the unique identifier for the pallet's storage. It is not defined in the pallet itself.
 pub mod pallet {
-	use frame_support::pallet_prelude::*; // Import various types used in the pallet definition
-	use frame_system::pallet_prelude::*; // Import some system helper types.
+	// Import various types used in the pallet definition
+	use frame_support::pallet_prelude::*;
+	// Import some system helper types.
+	use frame_system::pallet_prelude::*;
 
 	// type alias for easy access
 	type BalanceOf<T> = <T as Config>::Balance;
@@ -117,9 +119,9 @@ pub mod pallet {
 	//
 	// The macro expands the metadata for the storage item with the type used:
 	// * for a storage value the type of the value is copied into the metadata
-	// * for a storage map the type of the values and the type of the key is copied into the metadata
-	// * for a storage double map the types of the values and keys are copied into the
-	//   metadata.
+	// * for a storage map the type of the values and the type of the key is copied into the
+	//   metadata
+	// * for a storage double map the types of the values and keys are copied into the metadata.
 	//
 	// NOTE: The generic `Hasher` must implement the `StorageHasher` trait (or the type is not
 	// usable at all). We use [`StorageHasher::METADATA`] for the metadata of the hasher of the
@@ -146,8 +148,8 @@ pub mod pallet {
 		pub myfield: u32,
 	}
 
-	// TODO: Get hands dirty with genesis build and get idea on how it's different from genesis config
-	// Declare genesis builder. (This is need only if GenesisConfig is declared)
+	// TODO: Get hands dirty with genesis build and get idea on how it's different from genesis
+	// config Declare genesis builder. (This is need only if GenesisConfig is declared)
 	#[pallet::genesis_build]
 	impl<T: Config> GenesisBuild<T> for GenesisConfig {
 		fn build(&self) {}
