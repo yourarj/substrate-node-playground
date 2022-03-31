@@ -1,4 +1,4 @@
-use crate as pallet_template;
+use crate as pallet_greeter;
 use frame_support::traits::{ConstU16, ConstU64};
 use frame_system as system;
 use sp_core::H256;
@@ -17,8 +17,8 @@ frame_support::construct_runtime!(
 		NodeBlock = Block,
 		UncheckedExtrinsic = UncheckedExtrinsic,
 	{
-		System: frame_system::{Pallet, Call, Config, Storage, Event<T>},
-		TemplateModule: pallet_template::{Pallet, Call, Storage, Event<T>},
+		System: frame_system,
+		SubsGreeter: pallet_greeter,
 	}
 );
 
@@ -49,7 +49,7 @@ impl system::Config for Test {
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 
-impl pallet_template::Config for Test {
+impl pallet_greeter::Config for Test {
 	type Event = Event;
 }
 

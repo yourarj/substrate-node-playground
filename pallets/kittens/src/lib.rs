@@ -9,8 +9,14 @@ pub mod pallet {
 
 	use frame_support::traits::{Currency, Randomness};
 
+	// current version of storage
+	// FIXME const STORAGE_VERSION: dyn GetStorageVersion =
+	// frame_support::traits::StorageVersion::new(106);
+
 	#[pallet::pallet]
 	#[pallet::generate_store(pub(super) trait Store)]
+	// TODO get hands dirty and get clean idea on storage_version
+	// FIXME #[pallet::storage_version(STORAGE_VERSION)]
 	pub struct Pallet<T>(_);
 
 	type BalanceOf<T> =

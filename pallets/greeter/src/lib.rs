@@ -2,32 +2,44 @@
 
 pub use pallet::*;
 
+// mocks for test
+#[cfg(test)]
+mod mock;
+
+// tests
+#[cfg(test)]
+mod tests;
+
+// benchmarking the pallet
+#[cfg(feature = "runtime-benchmarks")]
+mod benchmarking;
+
 /// ## Greeter Pallet
 /// this pallet lets user greet the
 /// blockchain
 ///
 /// ### membership values supported are
-/// 	[standard | gold | platinum]
+/// standard OR gold OR platinum
 ///
 /// ### Goals ACHIEVED:
-/// 	✔ implmement custom TYPES
-/// 	✔ implement custom STORAGE
-/// 	✔ implement custom EVENTS
-/// 	✔ implement custom ERRORS
-/// 	✔ implement EXTRINSICS without input
-/// 	✔ implement EXTRINSICS with input
-/// 	✔ implement types without `std` LIB
-/// 	✔ implement custom HOOKS
+/// implmement custom TYPES
+/// implement custom STORAGE
+/// implement custom EVENTS
+/// implement custom ERRORS
+/// implement EXTRINSICS without input
+/// implement EXTRINSICS with input
+/// implement types without 'std' LIB
+/// implement custom HOOKS
 ///
 /// ### Scenarios TESTED:
-/// 	✔ should_succeed - greet when no account
-/// 	✔ should_fail - greet twice with STANDARD
-/// 	✔ should_succeed - upgrade membership with no account
-/// 	✔ should_succeed - upgrade membership with account
-/// 	✔ should_succeed - upgrade from smaller to larger type and greet
-/// 	✔ should_fail - upgrade from larger to smaller and tweet
-/// 	✔ should_fail - invalid input (both content and length) when upgrading
-/// 	✔ should_succeed - hooks defined should get invoked
+///	should_succeed - greet when no account
+///	should_fail - greet twice with STANDARD
+///	should_succeed - upgrade membership with no account
+///	should_succeed - upgrade membership with account
+///	should_succeed - upgrade from smaller to larger type and greet
+///	should_fail - upgrade from larger to smaller and tweet
+///	should_fail - invalid input (both content and length) when upgrading
+///	should_succeed - hooks defined should get invoked
 #[frame_support::pallet]
 pub mod pallet {
 	use core::str::FromStr;

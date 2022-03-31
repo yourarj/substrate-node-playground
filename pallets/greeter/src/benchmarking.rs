@@ -7,8 +7,9 @@ use crate::Pallet as Template;
 use frame_benchmarking::{benchmarks, whitelisted_caller};
 use frame_system::RawOrigin;
 
+//FIXME: Benchmarks needs to be rewritten and fixed
 benchmarks! {
-	do_something {
+	alter_membership {
 		let s in 0 .. 100;
 		let caller: T::AccountId = whitelisted_caller();
 	}: _(RawOrigin::Signed(caller), s)
