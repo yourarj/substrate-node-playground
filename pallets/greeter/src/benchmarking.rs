@@ -10,12 +10,12 @@ use frame_system::RawOrigin;
 //FIXME: Benchmarks needs to be rewritten and fixed
 benchmarks! {
 	alter_membership {
-		let s in 0 .. 100;
+		let s:Vec[u8] in ["".into(), standard.into(), "gold".into(), "platinum".into(), "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq".into()];
 		let caller: T::AccountId = whitelisted_caller();
-	}: _(RawOrigin::Signed(caller), s)
+	}: alter_membership(RawOrigin::Signed(caller), s)
 	verify {
-		assert_eq!(Something::<T>::get(), Some(s));
+		assert_eq!(Members::<T>::get(&caller)?.member_type, s);
 	}
 
-	impl_benchmark_test_suite!(Template, crate::mock::new_test_ext(), crate::mock::Test);
+	impl_benchmark_test_suite!(SubsGreeter, crate::mock::new_test_ext(), crate::mock::Test);
 }

@@ -584,6 +584,19 @@ impl_runtime_apis! {
 			let params = (&config, &whitelist);
 			add_benchmarks!(params, batches);
 
+			// TODO check by running benchmark build
+			// benchmark addition of greeter
+			let whitelist: Vec<TrackedStorageKey> = vec![
+			// You can whitelist any storage keys you do not want to track here
+			];
+			let storage_info = AllPalletsWithSystem::storage_info();
+			let mut batches = Vec::<BenchmarkBatch>::new();
+			let params = (&config, &whitelist);
+
+			// Adding the pallet for which you will perform the benchmarking
+			add_benchmark!(params, batches, greter_pallet, SubGreeter);
+			// benchmark addition of greeter
+
 			Ok(batches)
 		}
 	}
